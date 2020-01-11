@@ -13,3 +13,6 @@ pack:
 
 deploy: pack
 	cd $(INFRA_DIR) && make infrastructure-apply
+
+destroy: pack
+	cd $(INFRA_DIR) && make infrastructure-destroy
