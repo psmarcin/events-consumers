@@ -7,9 +7,15 @@ resource "google_storage_bucket" "send_message" {
 }
 
 resource "google_storage_bucket_object" "send_message" {
-  name   = "send_message.zip"
+  name   = "send_message_${uuid()}.zip"
   bucket = google_storage_bucket.send_message.name
   source = "./../dist/message.zip"
+
+  lifecycle {
+    ignore_changes = [
+      name,
+    ]
+  }
 }
 
 resource "google_cloudfunctions_function" "send_message" {
@@ -27,4 +33,10 @@ resource "google_cloudfunctions_function" "send_message" {
   timeout               = 10
   entry_point           = "Consume"
   service_account_email = "root-481@events-consumer.iam.gserviceaccount.com"
+
+  lifecycle {
+    ignore_changes = [
+      source_archive_bucket,
+    ]
+  }
 }

@@ -10,6 +10,7 @@ setProject:
 
 pack:
 	cd $(PKG_DIR)/message/ && zip ./../../dist/message.zip ./* -r
+	cd $(PKG_DIR)/content/ && zip ./../../dist/content.zip ./* -r
 
 deploy: pack
 	cd $(INFRA_DIR) && make infrastructure-apply
