@@ -1,9 +1,9 @@
 NAME=events-consumer
 PROJECT_ID=events-consumer
 REGION=europe-west1
-INFRA_DIR=infrastructure
 PKG_DIR=pkg
 SERVICE_ACCOUNT=root-481@events-consumer.iam.gserviceaccount.com
+INFRA_DIR=./infrastructure
 
 setProject:
 	gcloud config set project $(PROJECT_ID)
@@ -12,8 +12,11 @@ pack:
 	cd $(PKG_DIR)/message/ && zip ./../../dist/message.zip ./* -r
 	cd $(PKG_DIR)/content/ && zip ./../../dist/content.zip ./* -r
 
-deploy: pack
-	cd $(INFRA_DIR) && make infrastructure-apply
+deploy-production: pack
+	cd $(INFRA_DIR) && make infrastructure-apply-prod
+
+deploy-development: pack
+	cd $(INFRA_DIR) && make infrastructure-apply-development
 
 destroy: pack
 	cd $(INFRA_DIR) && make infrastructure-destroy

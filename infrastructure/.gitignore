@@ -2,3 +2,7 @@ credentials.json
 terraform.tfstate
 terraform.tfstate.backup
 .terraform*
+production.tfvars
+staging.tfvars
+development.tfvars
+testing.tfvars

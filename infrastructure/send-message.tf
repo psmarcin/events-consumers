@@ -1,13 +1,18 @@
+variable "send_message_name" {
+  type = string
+  default = "send_message"
+}
+
 resource "google_pubsub_topic" "send_message" {
-  name = "send_message"
+  name = var.send_message_name
 }
 
 resource "google_storage_bucket" "send_message" {
-  name = "send_message"
+  name = var.send_message_name
 }
 
 resource "google_storage_bucket_object" "send_message" {
-  name   = "send_message_${uuid()}.zip"
+  name   = "${var.send_message_name}_${uuid()}.zip"
   bucket = google_storage_bucket.send_message.name
   source = "./../dist/message.zip"
 
@@ -19,7 +24,7 @@ resource "google_storage_bucket_object" "send_message" {
 }
 
 resource "google_cloudfunctions_function" "send_message" {
-  name        = "send_message"
+  name        = var.send_message_name
   description = "Message by Terraform"
   runtime     = "go111"
 

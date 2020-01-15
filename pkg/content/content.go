@@ -3,6 +3,7 @@ package content
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"cloud.google.com/go/pubsub"
 )
@@ -16,15 +17,19 @@ type PubSubMessage struct {
 	Data []byte `json:"data"`
 }
 
+var (
+	processContentTopicID = os.Getenv("PROCESS_CONTENT_TOPIC_ID")
+	sendMessageTopicID = os.Getenv("SEND_MESSAGE_TOPIC_ID")
+)
+
 // Get make external request to get content
 func Get(ctx context.Context, m PubSubMessage) error {
-	topicID := "process_content"
 	message := fmt.Sprintf("message from get_content '%s'", m.Data)
 	fmt.Printf("%s", message)
-	err := publish(ctx, topicID, message)
+	err := publish(ctx, processContentTopicID, message)
 
 	if err != nil {
-		fmt.Printf("can't publish message to topis %s for Get", topicID)
+		fmt.Printf("can't publish message to topis %s for Get", sendMessageTopicID)
 		return err
 	}
 	return nil
@@ -32,13 +37,12 @@ func Get(ctx context.Context, m PubSubMessage) error {
 
 // Process receives content and check if changed
 func Process(ctx context.Context, m PubSubMessage) error {
-	topicID := "send_message"
 	message := fmt.Sprintf("message from process_content '%s'", m.Data)
 	fmt.Printf("%s", message)
-	err := publish(ctx, topicID, message)
+	err := publish(ctx, sendMessageTopicID, message)
 
 	if err != nil {
-		fmt.Printf("can't publish message to topis %s for Process", topicID)
+		fmt.Printf("can't publish message to topis %s for Process", sendMessageTopicID)
 		return err
 	}
 
