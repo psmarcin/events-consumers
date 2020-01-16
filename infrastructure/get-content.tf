@@ -14,7 +14,7 @@ resource "google_storage_bucket" "get_content" {
 resource "google_storage_bucket_object" "get_content" {
   name   = "${var.get_content_name}_${uuid()}.zip"
   bucket = google_storage_bucket.get_content.name
-  source = "./../dist/content.zip"
+  source = "./../dist/get-content.zip"
 
   lifecycle {
     ignore_changes = [

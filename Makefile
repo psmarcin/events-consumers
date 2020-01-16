@@ -10,7 +10,8 @@ setProject:
 
 pack:
 	cd $(PKG_DIR)/message/ && zip ./../../dist/message.zip ./* -r
-	cd $(PKG_DIR)/content/ && zip ./../../dist/content.zip ./* -r
+	cd $(PKG_DIR)/get-content/ && zip ./../../dist/get-content.zip ./* -r
+	cd $(PKG_DIR)/process-content/ && zip ./../../dist/process-content.zip ./* -r
 
 deploy-production: pack
 	cd $(INFRA_DIR) && make infrastructure-apply-prod

@@ -3,6 +3,16 @@ variable "send_message_name" {
   default = "send_message"
 }
 
+variable "telegram_api_key" {
+  type = string
+  default = ""
+}
+
+variable "telegram_channel_id" {
+  type = string
+  default = ""
+}
+
 resource "google_pubsub_topic" "send_message" {
   name = var.send_message_name
 }
@@ -36,8 +46,13 @@ resource "google_cloudfunctions_function" "send_message" {
     resource   = google_pubsub_topic.send_message.name
   }
   timeout               = 10
-  entry_point           = "Consume"
+  entry_point           = "Send"
   service_account_email = "root-481@events-consumer.iam.gserviceaccount.com"
+
+  environment_variables = {
+    TELEGRAM_API_KEY = var.telegram_api_key,
+    TELEGRAM_CHANNEL_ID = var.telegram_channel_id,
+  }
 
   lifecycle {
     ignore_changes = [
