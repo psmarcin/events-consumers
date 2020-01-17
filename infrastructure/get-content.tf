@@ -58,6 +58,6 @@ resource "google_cloud_scheduler_job" "get_content" {
   pubsub_target {
     # topic.id is the topic's full resource name.
     topic_name = google_pubsub_topic.get_content.id
-    data       = base64encode("starting get_content...")
+    data       = base64encode("{\"url\": \"https://www.onet.pl/\", \"selector\":\".serviceName\"}")
   }
 }

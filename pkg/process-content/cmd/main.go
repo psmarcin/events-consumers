@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"events-consumers.psmarcin.dev/process-content"
 	"github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
+	"process-content"
 )
 
 func main() {

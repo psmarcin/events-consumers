@@ -47,16 +47,16 @@ func SendMessageToChannel(APIKey, message, channelId string) error {
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	res, _ := http.DefaultClient.Do(req)
-
+	res, err := http.DefaultClient.Do(req)
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(res)
-	fmt.Println(string(body))
+	_, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

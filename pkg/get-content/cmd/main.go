@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"events-consumers.psmarcin.dev/get-content"
+	"get-content"
 	"github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
 )
 

@@ -21,11 +21,8 @@ var (
 	sendMessageTopicID = os.Getenv("SEND_MESSAGE_TOPIC_ID")
 )
 
-// Process receives get-content and check if changed
 func Process(ctx context.Context, m PubSubMessage) error {
-	message := fmt.Sprintf("message from process_content '%s'", m.Data)
-	fmt.Printf("%s", message)
-	err := publish(ctx, sendMessageTopicID, message)
+	err := publish(ctx, sendMessageTopicID, string(m.Data))
 
 	if err != nil {
 		fmt.Printf("can't publish message to topis %s for Process", sendMessageTopicID)
