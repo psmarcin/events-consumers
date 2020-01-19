@@ -23,7 +23,7 @@ func TestGetValue(t *testing.T){
 
 	body, _ := html.Parse(strings.NewReader(bodyStr))
 
-	value, err := getValue(body, selector)
+	value, err := getContent(body, selector)
 
 	if err != nil{
 		t.Errorf("can't get value: %s", err)
@@ -42,7 +42,7 @@ func TestGetRequestAndValue(t *testing.T){
 	if err != nil {
 		t.Errorf("TestGetRequest got error %s", err)
 	}
-	value, err := getValue(resp, selector)
+	value, err := getContent(resp, selector)
 
 	if err != nil{
 		t.Errorf("can't get value: %s", err)

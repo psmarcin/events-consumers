@@ -27,25 +27,42 @@ var (
 
 // Get make external request to get get-content
 func Get(ctx context.Context, m PubSubMessage) error {
-	payload, err := New(m.Data)
+	// transform payload to struc
+	payload, err := NewIncomingPayload(m.Data)
 	if  err != nil {
 		return err
 	}
 
+	// make http request
 	body, err := getRequest(payload.URL)
 	if err != nil{
 		return errors.Wrap(err, "can't get page " + payload.URL)
 	}
 
-	value, err := getValue(body, payload.Selector)
+	// select content from body
+	value, err := getContent(body, payload.Selector)
 	if err != nil{
 		return errors.Wrap(err, "can't get value for selector " + payload.Selector)
 	}
 
+	// log
 	message := fmt.Sprintf("Page %s has changed value to %s", payload.URL, value)
 	fmt.Printf("%s", message)
 
-	err = publish(ctx, processContentTopicID, message)
+	outgoingPayload := OutgoingPayload{
+		URL:      payload.URL,
+		Selector: payload.Selector,
+		Content:  value,
+	}
+
+	// serialize payload
+	serialized, err := outgoingPayload.Serialize()
+	if err !=nil{
+		return err
+	}
+
+	// publish event
+	err = publish(ctx, processContentTopicID, serialized)
 	if err != nil {
 		return errors.Wrap(err, "can't publish message")
 	}
@@ -76,14 +93,14 @@ func getRequest(url string) (*html.Node, error){
 	return nodes, nil
 }
 
-func getValue(body *html.Node, selector string) (string, error){
+func getContent(body *html.Node, selector string) (string, error){
 	doc := goquery.NewDocumentFromNode(body)
 
 	value := doc.Find(selector).First().Text()
 	return value, nil
 }
 
-func publish(ctx context.Context, topicID, message string) error {
+func publish(ctx context.Context, topicID string, message []byte) error {
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
 		return fmt.Errorf("pubsub.NewClient: %v", err)
