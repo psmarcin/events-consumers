@@ -25,7 +25,7 @@ resource "google_storage_bucket_object" "get_content" {
 
 resource "google_cloudfunctions_function" "get_content" {
   name        = var.get_content_name
-  description = "Message by Terraform"
+  description = "Managed by Terraform"
   runtime     = "go111"
 
   available_memory_mb   = 128
