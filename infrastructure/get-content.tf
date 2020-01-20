@@ -49,15 +49,3 @@ resource "google_cloudfunctions_function" "get_content" {
     ]
   }
 }
-
-resource "google_cloud_scheduler_job" "get_content" {
-  name        = var.get_content_name
-  description = "Message by Terraform"
-  schedule    = "*/30 * * * *"
-
-  pubsub_target {
-    # topic.id is the topic's full resource name.
-    topic_name = google_pubsub_topic.get_content.id
-    data       = base64encode("{\"url\": \"https://www.onet.pl/\", \"selector\":\".serviceName\"}")
-  }
-}

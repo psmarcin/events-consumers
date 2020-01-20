@@ -17,6 +17,7 @@ pack: cleanup-dist
 	cd $(PKG_DIR)/message/ && zip ${PWD}/${DIST_DIR}/message.zip ./* -r -x "*cmd/*" -q
 	cd $(PKG_DIR)/get-content/ && zip $(PWD)/${DIST_DIR}/get-content.zip ./* -r -x "*cmd/*" -q
 	cd $(PKG_DIR)/process-content/ && zip $(PWD)/${DIST_DIR}/process-content.zip ./* -r -x "*cmd/*" -q
+	cd $(PKG_DIR)/get-jobs/ && zip $(PWD)/${DIST_DIR}/get-jobs.zip ./* -r -x "*cmd/*" -q
 
 deploy-production: pack
 	cd $(INFRA_DIR) && make infrastructure-apply-prod
