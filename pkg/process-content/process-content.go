@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/firestore"
@@ -60,6 +61,11 @@ func Process(ctx context.Context, m PubSubMessage) error {
 		return nil
 	}
 
+	err = addDocument(client, bgCtx, collectionID, payload, payload.Content)
+	if err != nil {
+		return errors.Wrap(err, "adding document failed")
+	}
+
 	message:= fmt.Sprintf("Content changes on page %s, was: %s, now: %s", payload.URL, wc.Value ,payload.Content)
 	err = publish(ctx, sendMessageTopicID, message)
 
@@ -82,6 +88,7 @@ func addDocument(
 		"url": payload.URL,
 		"selector":  payload.Selector,
 		"value":  value,
+		"createdAt": time.Now(),
 	})
 	if err != nil {
 		return errors.Wrap(err, "can't add new document")
@@ -100,7 +107,9 @@ func getDocument(
 	query := client.
 		Collection(collectionID).
 		Where("url", "==", payload.URL).
-		Where("selector", "==", payload.Selector)
+		Where("selector", "==", payload.Selector).
+		OrderBy("createdAt", firestore.Desc).
+		Limit(1)
 
 	iter := query.Documents(ctx)
 	for {
