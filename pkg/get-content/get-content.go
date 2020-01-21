@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/PuerkitoBio/goquery"
@@ -97,7 +98,8 @@ func getContent(body *html.Node, selector string) (string, error){
 	doc := goquery.NewDocumentFromNode(body)
 
 	value := doc.Find(selector).First().Text()
-	return value, nil
+	cleanedValue := strings.TrimSpace(value)
+	return cleanedValue, nil
 }
 
 func publish(ctx context.Context, topicID string, message []byte) error {
