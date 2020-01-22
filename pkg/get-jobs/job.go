@@ -9,6 +9,7 @@ import (
 type Job struct {
 	Command      string `json:"command"`
 	Selector string `json:"selector"`
+	Name string `json:"name"`
 }
 
 

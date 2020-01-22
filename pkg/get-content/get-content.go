@@ -55,6 +55,7 @@ func Get(ctx context.Context, m PubSubMessage) error {
 		Command:      payload.Command,
 		Selector: payload.Selector,
 		Content:  value,
+		Name: payload.Name,
 	}
 
 	// serialize payload

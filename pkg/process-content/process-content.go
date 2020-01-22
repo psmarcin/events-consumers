@@ -66,7 +66,7 @@ func Process(ctx context.Context, m PubSubMessage) error {
 		return errors.Wrap(err, "adding document failed")
 	}
 
-	message:= fmt.Sprintf("Content changes on page %s, was: %s, now: %s", payload.Command, wc.Value ,payload.Content)
+	message:= fmt.Sprintf("[%s] %s → %s", payload.Name, wc.Value ,payload.Content)
 	err = publish(ctx, sendMessageTopicID, message)
 
 	if err != nil {

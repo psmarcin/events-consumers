@@ -85,6 +85,7 @@ func getDocuments(
 		jobs = append(jobs, Job{
 			Command:      fmt.Sprintf("%s", data["command"]),
 			Selector:  fmt.Sprintf("%s", data["selector"]),
+			Name: fmt.Sprintf("%s", data["name"]),
 		})
 	}
 

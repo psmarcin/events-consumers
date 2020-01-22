@@ -10,6 +10,7 @@ import (
 type IncomingPayload struct {
 	Command string `json:"command"`
 	Selector string `json:"selector"`
+	Name string `json:"name"`
 }
 
 // NewIncomingPayload parse raw bytes to IncomingPayload struct
@@ -26,6 +27,7 @@ type OutgoingPayload struct {
 	Command string `json:"command"`
 	Selector string `json:"selector"`
 	Content string `json:"content"`
+	Name string `json:"name"`
 }
 
 func (p *OutgoingPayload) Serialize() ([]byte, error) {
