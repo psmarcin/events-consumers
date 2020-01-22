@@ -7,7 +7,7 @@ import (
 )
 
 type Job struct {
-	Url      string `json:"url"`
+	Command      string `json:"command"`
 	Selector string `json:"selector"`
 }
 

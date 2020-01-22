@@ -14,7 +14,6 @@ import (
 var (
 	projectID = "events-consumer"
 	collectionID = "jobs"
-	errDocumentNotFound = errors.New("Document not found")
 )
 
 // PubSubMessage is the payload of a Pub/Sub event.
@@ -50,6 +49,7 @@ func GetJobs(ctx context.Context, m PubSubMessage) error {
 		}
 
 		err = publish(ctx, getContentTopicID, message)
+		fmt.Printf("published %s\n", message)
 
 		if err != nil {
 			fmt.Printf("can't publish message to topis %s for GetJobs", getContentTopicID)
@@ -83,7 +83,7 @@ func getDocuments(
 		}
 		data := doc.Data()
 		jobs = append(jobs, Job{
-			Url:      fmt.Sprintf("%s", data["url"]),
+			Command:      fmt.Sprintf("%s", data["command"]),
 			Selector:  fmt.Sprintf("%s", data["selector"]),
 		})
 	}

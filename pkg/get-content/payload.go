@@ -8,7 +8,7 @@ import (
 )
 
 type IncomingPayload struct {
-	URL string `json:"url"`
+	Command string `json:"command"`
 	Selector string `json:"selector"`
 }
 
@@ -23,7 +23,7 @@ func NewIncomingPayload(raw []byte) (IncomingPayload, error) {
 }
 
 type OutgoingPayload struct {
-	URL string `json:"url"`
+	Command string `json:"command"`
 	Selector string `json:"selector"`
 	Content string `json:"content"`
 }

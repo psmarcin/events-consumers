@@ -66,7 +66,7 @@ func Process(ctx context.Context, m PubSubMessage) error {
 		return errors.Wrap(err, "adding document failed")
 	}
 
-	message:= fmt.Sprintf("Content changes on page %s, was: %s, now: %s", payload.URL, wc.Value ,payload.Content)
+	message:= fmt.Sprintf("Content changes on page %s, was: %s, now: %s", payload.Command, wc.Value ,payload.Content)
 	err = publish(ctx, sendMessageTopicID, message)
 
 	if err != nil {
@@ -85,7 +85,7 @@ func addDocument(
 	value string,
 	) error {
 	_, _, err := client.Collection(collectionID).Add(ctx, map[string]interface{}{
-		"url": payload.URL,
+		"command": payload.Command,
 		"selector":  payload.Selector,
 		"value":  value,
 		"createdAt": time.Now(),
@@ -106,7 +106,7 @@ func getDocument(
 
 	query := client.
 		Collection(collectionID).
-		Where("url", "==", payload.URL).
+		Where("command", "==", payload.Command).
 		Where("selector", "==", payload.Selector).
 		OrderBy("createdAt", firestore.Desc).
 		Limit(1)

@@ -10,7 +10,7 @@ import (
 func TestGetRequest(t *testing.T) {
 	url := "https://www.onet.pl/"
 
-	_, err := getRequest(url)
+	_, err := requestCommand(url)
 	if err != nil {
 		t.Errorf("TestGetRequest got error %s", err)
 	}
@@ -38,7 +38,7 @@ func TestGetRequestAndValue(t *testing.T){
 	url := "https://www.onet.pl/"
 	selector:=".serviceName"
 	expectValue := "Sympatia"
-	resp, err := getRequest(url)
+	resp, err := requestCommand(url)
 	if err != nil {
 		t.Errorf("TestGetRequest got error %s", err)
 	}

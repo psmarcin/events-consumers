@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/go-resty/resty/v2"
 	"github.com/pkg/errors"
+	"github.com/txgruppi/parseargs-go"
 	"golang.org/x/net/html"
 )
 
@@ -35,9 +36,9 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	}
 
 	// make http request
-	body, err := getRequest(payload.URL)
+	body, err := requestCommand(payload.Command)
 	if err != nil{
-		return errors.Wrap(err, "can't get page " + payload.URL)
+		return errors.Wrap(err, "can't get page " + payload.Command)
 	}
 
 	// select content from body
@@ -47,11 +48,11 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	}
 
 	// log
-	message := fmt.Sprintf("Page %s has changed value to %s", payload.URL, value)
+	message := fmt.Sprintf("Page %s has changed value to %s", payload.Command, value)
 	fmt.Printf("%s", message)
 
 	outgoingPayload := OutgoingPayload{
-		URL:      payload.URL,
+		Command:      payload.Command,
 		Selector: payload.Selector,
 		Content:  value,
 	}
@@ -71,22 +72,22 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	return nil
 }
 
-func getRequest(url string) (*html.Node, error){
-	client := resty.New()
-
-	resp, err := client.R().
-		SetDoNotParseResponse(true).
-		Get(url)
-
+func requestCommand(command string) (*html.Node, error){
+	args, err :=parseargs.Parse(command)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't get " + url)
+		return nil, errors.Wrap(err, "can't parse curl string")
 	}
 
-	if resp.IsError() {
-		return nil, errors.New(fmt.Sprintf("request failed with status code %s", resp.Status()))
+	cmd := exec.Command("curl", args...)
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return nil,errors.Wrap(err, "stdout pipe error")
+	}
+	if err := cmd.Start(); err != nil {
+		return nil,errors.Wrap(err, "cmd start error")
 	}
 
-	nodes, err := html.Parse(resp.RawBody())
+	nodes, err := html.Parse(stdout)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't parse html")
 	}

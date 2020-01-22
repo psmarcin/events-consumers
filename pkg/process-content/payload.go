@@ -8,8 +8,8 @@ import (
 )
 
 type IncomingPayload struct {
-	URL string `json:"Url"`
-	Selector string `json:"Selector"`
+	Command string `json:"command"`
+	Selector string `json:"selector"`
 	Content string `json:"content"`
 }
 
