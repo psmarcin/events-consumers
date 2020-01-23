@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	url "net/url"
 	"os"
 )
 
@@ -43,9 +44,9 @@ func SendMessageToChannel(APIKey, message, channelId string) error {
 		return errors.New("channelId can't be empty")
 	}
 
-	url := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s", APIKey, channelId, message)
+	URL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s", APIKey, channelId, url.QueryEscape(message))
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, _ := http.NewRequest("GET", URL, nil)
 
 	res, err := http.DefaultClient.Do(req)
 	defer res.Body.Close()
