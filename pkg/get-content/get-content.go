@@ -76,21 +76,21 @@ func Get(ctx context.Context, m PubSubMessage) error {
 func requestCommand(command string) (*html.Node, error){
 	args, err :=parseargs.Parse(command)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't parse curl string")
+		return nil, errors.Wrap(err, "can't parse curl string " + command)
 	}
 
 	cmd := exec.Command("curl", args...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil,errors.Wrap(err, "stdout pipe error")
+		return nil,errors.Wrap(err, "stdout pipe error "  + command)
 	}
 	if err := cmd.Start(); err != nil {
-		return nil,errors.Wrap(err, "cmd start error")
+		return nil,errors.Wrap(err, "cmd start error "  + command)
 	}
 
 	nodes, err := html.Parse(stdout)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't parse html")
+		return nil, errors.Wrap(err, "can't parse html "  + command)
 	}
 
 	return nodes, nil

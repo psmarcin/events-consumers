@@ -37,7 +37,7 @@ func Process(ctx context.Context, m PubSubMessage) error {
 	bgCtx := context.Background()
 	client, err := firestore.NewClient(bgCtx, projectID)
 	if err != nil {
-		return errors.Wrap(err, "can't creat client for firebase")
+		return errors.Wrap(err, fmt.Sprintf("[%s] can't creat client for firebase", payload.Name))
 	}
 
 	// Close client when done.
@@ -47,17 +47,17 @@ func Process(ctx context.Context, m PubSubMessage) error {
 	if err == errDocumentNotFound {
 		err = addDocument(client, bgCtx, collectionID, payload, payload.Content)
 		if err != nil {
-			return errors.Wrap(err, "adding document failed")
+			return errors.Wrap(err, fmt.Sprintf("[%s] adding document failed", payload.Name))
 		}
 	}
 	if err != nil && err != errDocumentNotFound {
-		return errors.Wrap(err, "adding document failed")
+		return errors.Wrap(err, fmt.Sprintf("[%s] get document failed", payload.Name))
 	}
 
 	contentChanged := hasContentChanged(wc.Value, payload.Content)
 
 	if contentChanged == false {
-		fmt.Printf("content hasn't change, still %s", payload.Content)
+		fmt.Printf("[%s] content hasn't change, still %s",payload.Name, payload.Content)
 		return nil
 	}
 
