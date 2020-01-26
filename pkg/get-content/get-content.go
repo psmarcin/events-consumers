@@ -31,20 +31,20 @@ var (
 func Get(ctx context.Context, m PubSubMessage) error {
 	// transform payload to struc
 	payload, err := NewIncomingPayload(m.Data)
-	if  err != nil {
+	if err != nil {
 		return err
 	}
 
 	// make http request
 	body, err := requestCommand(payload.Command)
-	if err != nil{
-		return errors.Wrap(err, "can't get page " + payload.Command)
+	if err != nil {
+		return errors.Wrap(err, "can't get page "+payload.Command)
 	}
 
 	// select content from body
 	value, err := getContent(body, payload.Selector)
-	if err != nil{
-		return errors.Wrap(err, "can't get value for selector " + payload.Selector)
+	if err != nil {
+		return errors.Wrap(err, "can't get value for selector "+payload.Selector)
 	}
 
 	// log
@@ -52,15 +52,15 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	fmt.Printf("%s", message)
 
 	outgoingPayload := OutgoingPayload{
-		Command:      payload.Command,
+		Command:  payload.Command,
 		Selector: payload.Selector,
 		Content:  value,
-		Name: payload.Name,
+		Name:     payload.Name,
 	}
 
 	// serialize payload
 	serialized, err := outgoingPayload.Serialize()
-	if err !=nil{
+	if err != nil {
 		return err
 	}
 
@@ -73,30 +73,30 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	return nil
 }
 
-func requestCommand(command string) (*html.Node, error){
-	args, err :=parseargs.Parse(command)
+func requestCommand(command string) (*html.Node, error) {
+	args, err := parseargs.Parse(command)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't parse curl string " + command)
+		return nil, errors.Wrap(err, "can't parse curl string "+command)
 	}
 
 	cmd := exec.Command("curl", args...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil,errors.Wrap(err, "stdout pipe error "  + command)
+		return nil, errors.Wrap(err, "stdout pipe error "+command)
 	}
 	if err := cmd.Start(); err != nil {
-		return nil,errors.Wrap(err, "cmd start error "  + command)
+		return nil, errors.Wrap(err, "cmd start error "+command)
 	}
 
 	nodes, err := html.Parse(stdout)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't parse html "  + command)
+		return nil, errors.Wrap(err, "can't parse html "+command)
 	}
 
 	return nodes, nil
 }
 
-func getContent(body *html.Node, selector string) (string, error){
+func getContent(body *html.Node, selector string) (string, error) {
 	doc := goquery.NewDocumentFromNode(body)
 
 	value := doc.Find(selector).First().Text()
@@ -116,5 +116,3 @@ func publish(ctx context.Context, topicID string, message []byte) error {
 	})
 	return nil
 }
-
-

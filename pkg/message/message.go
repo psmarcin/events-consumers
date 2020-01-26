@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	telegramAPIKey = os.Getenv("TELEGRAM_API_KEY")
+	telegramAPIKey    = os.Getenv("TELEGRAM_API_KEY")
 	telegramChannelID = os.Getenv("TELEGRAM_CHANNEL_ID")
 )
 

@@ -1,17 +1,16 @@
 package process_content
 
-
 import (
-"encoding/json"
+	"encoding/json"
 
-"github.com/pkg/errors"
+	"github.com/pkg/errors"
 )
 
 type IncomingPayload struct {
-	Command string `json:"command"`
+	Command  string `json:"command"`
 	Selector string `json:"selector"`
-	Content string `json:"content"`
-	Name string `json:"name"`
+	Content  string `json:"content"`
+	Name     string `json:"name"`
 }
 
 // NewIncomingPayload parse raw bytes to IncomingPayload struct
@@ -23,4 +22,3 @@ func NewIncomingPayload(raw []byte) (IncomingPayload, error) {
 	}
 	return p, nil
 }
-

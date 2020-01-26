@@ -6,15 +6,15 @@ import (
 	"os"
 	"time"
 
-	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/pubsub"
 	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 )
 
 var (
-	projectID = "events-consumer"
-	collectionID = "web_contents"
+	projectID           = "events-consumer"
+	collectionID        = "web_contents"
 	errDocumentNotFound = errors.New("Document not found")
 )
 
@@ -29,7 +29,7 @@ var (
 
 func Process(ctx context.Context, m PubSubMessage) error {
 	payload, err := NewIncomingPayload(m.Data)
-	if  err != nil {
+	if err != nil {
 		return err
 	}
 
@@ -43,6 +43,7 @@ func Process(ctx context.Context, m PubSubMessage) error {
 	// Close client when done.
 	defer client.Close()
 
+	// get latest value
 	wc, err := getDocument(client, bgCtx, collectionID, payload)
 	if err == errDocumentNotFound {
 		err = addDocument(client, bgCtx, collectionID, payload, payload.Content)
@@ -54,20 +55,26 @@ func Process(ctx context.Context, m PubSubMessage) error {
 		return errors.Wrap(err, fmt.Sprintf("[%s] get document failed", payload.Name))
 	}
 
-	contentChanged := hasContentChanged(wc.Value, payload.Content)
-
-	if contentChanged == false {
-		fmt.Printf("[%s] content hasn't change, still %s",payload.Name, payload.Content)
+	// check if content changed
+	if contentChanged := hasContentChanged(wc.Value, payload.Content); contentChanged == false {
+		fmt.Printf("[%s] content hasn't change, still %s", payload.Name, payload.Content)
 		return nil
 	}
 
+	// content has changed so we have to add it to database
 	err = addDocument(client, bgCtx, collectionID, payload, payload.Content)
 	if err != nil {
 		return errors.Wrap(err, "adding document failed")
 	}
 
-	message:= fmt.Sprintf("[%s] %s → %s", payload.Name, wc.Value ,payload.Content)
-	err = publish(ctx, sendMessageTopicID, message)
+	// create pubsub client
+	pubSubClient, err := pubsub.NewClient(ctx, projectID)
+	if err != nil {
+		return fmt.Errorf("pubsub.NewClient: %v", err)
+	}
+
+	message := fmt.Sprintf("[%s] %s → %s", payload.Name, wc.Value, payload.Content)
+	err = publish(pubSubClient, ctx, sendMessageTopicID, message)
 
 	if err != nil {
 		fmt.Printf("can't publish message to topis %s for Process", sendMessageTopicID)
@@ -83,11 +90,11 @@ func addDocument(
 	collectionID string,
 	payload IncomingPayload,
 	value string,
-	) error {
+) error {
 	_, _, err := client.Collection(collectionID).Add(ctx, map[string]interface{}{
-		"command": payload.Command,
+		"command":   payload.Command,
 		"selector":  payload.Selector,
-		"value":  value,
+		"value":     value,
 		"createdAt": time.Now(),
 	})
 	if err != nil {
@@ -134,12 +141,7 @@ func hasContentChanged(contentA, contentB string) bool {
 	return contentA != contentB
 }
 
-func publish(ctx context.Context, topicID, message string) error {
-	client, err := pubsub.NewClient(ctx, projectID)
-	if err != nil {
-		return fmt.Errorf("pubsub.NewClient: %v", err)
-	}
-
+func publish(client *pubsub.Client, ctx context.Context, topicID, message string) error {
 	t := client.Topic(topicID)
 	t.Publish(ctx, &pubsub.Message{
 		Data: []byte(message),

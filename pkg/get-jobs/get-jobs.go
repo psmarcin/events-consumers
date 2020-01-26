@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"os"
 
-	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/pubsub"
 	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 )
 
 var (
-	projectID = "events-consumer"
+	projectID    = "events-consumer"
 	collectionID = "jobs"
 )
 
@@ -37,7 +37,7 @@ func GetJobs(ctx context.Context, m PubSubMessage) error {
 	defer client.Close()
 
 	jobs, err := getDocuments(client, bgCtx, collectionID)
-	if err != nil  {
+	if err != nil {
 		return errors.Wrap(err, "getting document failed")
 	}
 
@@ -66,7 +66,7 @@ func getDocuments(
 	client *firestore.Client,
 	ctx context.Context,
 	collectionID string,
-	) ([]Job, error) {
+) ([]Job, error) {
 	var jobs []Job
 
 	query := client.
@@ -83,9 +83,9 @@ func getDocuments(
 		}
 		data := doc.Data()
 		jobs = append(jobs, Job{
-			Command:      fmt.Sprintf("%s", data["command"]),
-			Selector:  fmt.Sprintf("%s", data["selector"]),
-			Name: fmt.Sprintf("%s", data["name"]),
+			Command:  fmt.Sprintf("%s", data["command"]),
+			Selector: fmt.Sprintf("%s", data["selector"]),
+			Name:     fmt.Sprintf("%s", data["name"]),
 		})
 	}
 

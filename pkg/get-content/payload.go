@@ -1,6 +1,5 @@
 package get_content
 
-
 import (
 	"encoding/json"
 
@@ -8,9 +7,9 @@ import (
 )
 
 type IncomingPayload struct {
-	Command string `json:"command"`
+	Command  string `json:"command"`
 	Selector string `json:"selector"`
-	Name string `json:"name"`
+	Name     string `json:"name"`
 }
 
 // NewIncomingPayload parse raw bytes to IncomingPayload struct
@@ -24,10 +23,10 @@ func NewIncomingPayload(raw []byte) (IncomingPayload, error) {
 }
 
 type OutgoingPayload struct {
-	Command string `json:"command"`
+	Command  string `json:"command"`
 	Selector string `json:"selector"`
-	Content string `json:"content"`
-	Name string `json:"name"`
+	Content  string `json:"content"`
+	Name     string `json:"name"`
 }
 
 func (p *OutgoingPayload) Serialize() ([]byte, error) {

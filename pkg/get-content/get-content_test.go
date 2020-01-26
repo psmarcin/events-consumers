@@ -16,7 +16,7 @@ func TestGetRequest(t *testing.T) {
 	}
 }
 
-func TestGetValue(t *testing.T){
+func TestGetValue(t *testing.T) {
 	bodyStr := "<div><p>1</p><p class=aaa>2</p></div>"
 	selector := "div .aaa"
 	expectValue := "2"
@@ -25,18 +25,18 @@ func TestGetValue(t *testing.T){
 
 	value, err := getContent(body, selector)
 
-	if err != nil{
+	if err != nil {
 		t.Errorf("can't get value: %s", err)
 	}
 
-	if value != expectValue{
+	if value != expectValue {
 		t.Errorf("TestGetValue expect %s, but got %s", expectValue, value)
 	}
 }
 
-func TestGetRequestAndValue(t *testing.T){
+func TestGetRequestAndValue(t *testing.T) {
 	url := "https://www.onet.pl/"
-	selector:=".serviceName"
+	selector := ".serviceName"
 	expectValue := "Sympatia"
 	resp, err := requestCommand(url)
 	if err != nil {
@@ -44,11 +44,11 @@ func TestGetRequestAndValue(t *testing.T){
 	}
 	value, err := getContent(resp, selector)
 
-	if err != nil{
+	if err != nil {
 		t.Errorf("can't get value: %s", err)
 	}
 
-	if value != expectValue{
+	if value != expectValue {
 		t.Errorf("TestGetValue expect %s, but got %s", expectValue, value)
 	}
 }
