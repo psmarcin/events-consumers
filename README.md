@@ -85,6 +85,11 @@ make deploy-production
 ### Config files
 1. `./infrastructure/production.tfvars`:
 ```hcl-terraform
+# https://www.terraform.io/docs/providers/google/index.html
+project = ""
+region = ""
+zone = ""
+# app config
 get_content_name=""
 get_jobs_name=""
 telegram_api_key=""
@@ -92,6 +97,11 @@ telegram_channel_id=""
 ```
 1. `./infrastructure/development.tfvars`:
 ```hcl-terraform
+# https://www.terraform.io/docs/providers/google/index.html
+project = ""
+region = ""
+zone = ""
+# app config
 get_content_name=""
 get_jobs_name=""
 telegram_api_key=""
