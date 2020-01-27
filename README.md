@@ -20,8 +20,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 A step by step series of examples that tell you how to get a development env running
 
-1. Run function locally: 
-```shell script
+Run function locally: 
+```sh
 cd ./pkg/get-content
 go run ./cmd/main.go
 ```
@@ -29,7 +29,7 @@ go run ./cmd/main.go
 Server will start listing on http://localhost:8080
 
 Make POST request with event payload: 
-```shell script
+```sh
 curl --location --request POST 'http://localhost:8080' \
 --header 'Content-Type: text/plain' \
 --data-binary 'request-payload.json'
@@ -73,7 +73,7 @@ We use `terraform` for handling all infrastructure tasks including deployment.
 ## Deploy
 
 Set `credential.json` file for authorization in GCP: 
-```shell script
+```sh
 export GOOGLE_CLOUD_KEYFILE_JSON="./events-consumers/infrastructure/credentials.json"
 ```
 
@@ -84,7 +84,7 @@ make deploy-production
 
 ### Config files
 1. `./infrastructure/production.tfvars`:
-```hcl-terraform
+```terraform
 # https://www.terraform.io/docs/providers/google/index.html
 project = ""
 region = ""
@@ -96,7 +96,7 @@ telegram_api_key=""
 telegram_channel_id=""
 ```
 1. `./infrastructure/development.tfvars`:
-```hcl-terraform
+```terraform
 # https://www.terraform.io/docs/providers/google/index.html
 project = ""
 region = ""
