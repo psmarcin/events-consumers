@@ -32,3 +32,12 @@ deploy-development: pack
 .PHONY: destroy
 destroy: pack
 	cd $(INFRA_DIR) && make infrastructure-destroy
+
+.PHONY: get-dependencies
+get-dependencies:
+	find ./pkg/ -maxdepth 1 -type d \( ! -name "pkg" \) -exec bash -c "cd '{}' && go get ." \;
+
+.PHONY: test
+test:
+	find ./pkg/ -maxdepth 1 -type d \( ! -name "pkg" \) -exec bash -c "cd '{}' && go test ./..." \;
+
