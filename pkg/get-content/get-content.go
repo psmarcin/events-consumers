@@ -36,7 +36,7 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	}
 
 	// make http request
-	body, err := requestCommand(payload.Command)
+	body, err := runCommand("curl", payload.Command)
 	if err != nil {
 		return errors.Wrap(err, "can't get page "+payload.Command)
 	}
@@ -73,13 +73,13 @@ func Get(ctx context.Context, m PubSubMessage) error {
 	return nil
 }
 
-func requestCommand(command string) (*html.Node, error) {
-	args, err := parseargs.Parse(command)
+func runCommand(command, arguments string) (*html.Node, error) {
+	args, err := parseargs.Parse(arguments)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't parse curl string "+command)
 	}
 
-	cmd := exec.Command("curl", args...)
+	cmd := exec.Command(command, args...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, errors.Wrap(err, "stdout pipe error "+command)
