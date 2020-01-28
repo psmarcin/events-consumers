@@ -1,5 +1,7 @@
 # Events Consumer 
 
+![Unit tests](https://github.com/psmarcin/events-consumers/workflows/Unit%20tests/badge.svg?branch=master)
+
 Notify about content changes. Use Google Cloud Function, Google PubSub, Google Scheduler and Google Firestore to send notification via Telegram about content changes.
 
 #### Battery included
