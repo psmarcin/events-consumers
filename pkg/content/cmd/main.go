@@ -4,12 +4,13 @@ import (
 	"log"
 	"os"
 
-	"get-content"
+	"events-consumers.psmarcin.dev/content"
 	"github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
 )
 
 func main() {
-	funcframework.RegisterEventFunction("/", get_content.Get)
+	funcframework.RegisterEventFunction("/", content.Get)
+	//funcframework.RegisterEventFunction("/", content.Process)
 	// Use PORT environment variable, or default to 8080.
 	port := "8080"
 	if envPort := os.Getenv("PORT"); envPort != "" {

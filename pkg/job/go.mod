@@ -1,4 +1,4 @@
-module get-jobs
+module events-consumers.psmarcin.dev/jobs
 
 go 1.13
 

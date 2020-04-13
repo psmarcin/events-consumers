@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	funcframework.RegisterEventFunction("/", get_jobs.GetJobs)
+	funcframework.RegisterEventFunction("/", job.GetJobs)
 	// Use PORT environment variable, or default to 8080.
 	port := "8080"
 	if envPort := os.Getenv("PORT"); envPort != "" {

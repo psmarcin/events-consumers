@@ -49,10 +49,10 @@ func SendMessageToChannel(APIKey, message, channelId string) error {
 	req, _ := http.NewRequest("GET", URL, nil)
 
 	res, err := http.DefaultClient.Do(req)
-	defer res.Body.Close()
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	_, err = ioutil.ReadAll(res.Body)
 	if err != nil {
