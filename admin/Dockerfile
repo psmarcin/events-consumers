@@ -11,6 +11,6 @@ RUN go build -o ./app
 
 FROM golang:1.14-alpine
 COPY --from=build-env /src/app /app
-#COPY --from=build-env /src/views /views/
+COPY --from=build-env /src/views /views/
 
 CMD ["/app"]
