@@ -1,0 +1,10 @@
+{{ define "jobItem" }}
+<li> {{ .Id }} - {{ .Name }} - <small>{{ .Command }}</small> <a href='/job/{{ .Id }}/edit'>Edit</a> <form method="post" action="/job/{{.Id}}/delete"><button>Delete</button></form></li>
+{{ end }}
+
+<a href="/job/create">Create</a>
+<ul>
+    {{ range . }}
+        {{ template "jobItem" . }}
+    {{ end }}
+</li>

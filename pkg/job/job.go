@@ -1,7 +1,8 @@
-package get_jobs
+package job
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -15,6 +16,20 @@ var (
 	projectID    = "events-consumer"
 	collectionID = "jobs"
 )
+
+type Job struct {
+	Command  string `json:"command"`
+	Selector string `json:"selector"`
+	Name     string `json:"name"`
+}
+
+func (p *Job) Serialize() ([]byte, error) {
+	serialized, err := json.Marshal(&p)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't serialize Job")
+	}
+	return serialized, err
+}
 
 // PubSubMessage is the payload of a Pub/Sub event.
 type PubSubMessage struct {
