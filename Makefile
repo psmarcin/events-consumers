@@ -6,8 +6,8 @@ DIST_DIR=dist
 INFRA_DIR=./infrastructure
 PWD=${shell pwd}
 
-.PHONY: setProject
-setProject:
+.PHONY: set-project
+set-project:
 	gcloud config set project $(PROJECT_ID)
 
 .PHONY: cleanup-dist
@@ -17,9 +17,8 @@ cleanup-dist:
 .PHONY: pack
 pack: cleanup-dist
 	cd $(PKG_DIR)/message/ && zip ${PWD}/${DIST_DIR}/message.zip ./* -r -x "*cmd/*" -q
-	cd $(PKG_DIR)/get-content/ && zip $(PWD)/${DIST_DIR}/get-content.zip ./* -r -x "*cmd/*" -q
-	cd $(PKG_DIR)/process-content/ && zip $(PWD)/${DIST_DIR}/process-content.zip ./* -r -x "*cmd/*" -q
-	cd $(PKG_DIR)/get-jobs/ && zip $(PWD)/${DIST_DIR}/get-jobs.zip ./* -r -x "*cmd/*" -q
+	cd $(PKG_DIR)/content/ && zip $(PWD)/${DIST_DIR}/content.zip ./* -r -x "*cmd/*" -q
+	cd $(PKG_DIR)/job/ && zip $(PWD)/${DIST_DIR}/job.zip ./* -r -x "*cmd/*" -q
 
 .PHONY: deploy-production
 deploy-production: pack
@@ -40,4 +39,8 @@ get-dependencies:
 .PHONY: test
 test:
 	find ./pkg/ -maxdepth 1 -type d \( ! -name "pkg" \) -exec bash -c "cd '{}' && go test ./..." \;
+
+.PHONY: vet
+vet:
+	find ./pkg/ -maxdepth 1 -type d \( ! -name "pkg" \) -exec bash -c "cd '{}' && go vet ./..." \;
 
