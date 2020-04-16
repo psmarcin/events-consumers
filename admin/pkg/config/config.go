@@ -12,12 +12,13 @@ type Config struct {
 	FirestoreCollectionId string `default:"jobs"`
 	BasicAuthUser         string `default:"admin",envconfig:"basic_auth_user"`
 	BasicAuthPassword     string `default:"admin",envconfig:"basic_auth_password"`
+	TemplatePath          string `default:"/",envconfig:"template_path"`
 }
 
 var C Config
 
 func init() {
-	err := envconfig.Process("", &C)
+	err := envconfig.Process("ec", &C)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

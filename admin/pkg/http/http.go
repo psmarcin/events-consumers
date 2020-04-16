@@ -56,7 +56,7 @@ func IndexHandler(dependencies Dependencies) func(*fiber.Ctx) {
 			c.Next(err)
 		}
 
-		if err := c.Render("./views/index.tmpl", jobs); err != nil {
+		if err := c.Render(config.C.TemplatePath + "views/index.tmpl", jobs); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
@@ -78,7 +78,7 @@ func JobEditFormHandler(dependencies Dependencies) func(*fiber.Ctx) {
 
 		log.Printf("job %+v", job)
 
-		if err := c.Render("./views/edit.tmpl", job); err != nil {
+		if err := c.Render(config.C.TemplatePath + "views/edit.tmpl", job); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
@@ -100,7 +100,7 @@ func JobEditHandler(dependencies Dependencies) func(*fiber.Ctx) {
 
 func JobCreateFormHandler() func(*fiber.Ctx) {
 	return func(c *fiber.Ctx) {
-		if err := c.Render("./views/create.tmpl", nil); err != nil {
+		if err := c.Render(config.C.TemplatePath + "views/create.tmpl", nil); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
