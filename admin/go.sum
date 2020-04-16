@@ -50,9 +50,13 @@ github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
+github.com/gofiber/basicauth v0.0.3 h1:55fibkGF22Rfq3rCeogAVV/C62RgaVEtSVCbZYtBBbk=
+github.com/gofiber/basicauth v0.0.3/go.mod h1:sYBd0mPXtN8+Kf55PEzTG4Q1J5LqtU7p4LC+ZFBuT9M=
 github.com/gofiber/fiber v1.8.42/go.mod h1:yQhhFUJprqnZVaEbd5h4ZqU+wb9vzP5imw7UbjGlDuQ=
 github.com/gofiber/fiber v1.8.431 h1:kFLjtUZ/O2ABjL52qJ3WKyazP7ua/wPIzzj+jnamH5k=
 github.com/gofiber/fiber v1.8.431/go.mod h1:yQhhFUJprqnZVaEbd5h4ZqU+wb9vzP5imw7UbjGlDuQ=
+github.com/gofiber/fiber v1.9.0 h1:rk7gtU044K+Ed/KhQWmVRmOzKnKtKUzKD6nhcGvrylI=
+github.com/gofiber/fiber v1.9.0/go.mod h1:yQhhFUJprqnZVaEbd5h4ZqU+wb9vzP5imw7UbjGlDuQ=
 github.com/gofiber/helmet v0.0.2 h1:rbUJjaGBveI0ykepO65MhJorrKKIa66v2LJrYuPuekY=
 github.com/gofiber/helmet v0.0.2/go.mod h1:J5LSbuDNr1UxHnqe0Zk7FF/77xYMEoWrCG4zcyHt1wk=
 github.com/gofiber/logger v0.0.2 h1:l058EXu3d5i+4tmD1sad+7mBSzFqYq6rx5OYRzVeogo=

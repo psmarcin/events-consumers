@@ -4,7 +4,8 @@ go 1.13
 
 require (
 	cloud.google.com/go/firestore v1.2.0
-	github.com/gofiber/fiber v1.8.431
+	github.com/gofiber/basicauth v0.0.3
+	github.com/gofiber/fiber v1.9.0
 	github.com/gofiber/helmet v0.0.2
 	github.com/gofiber/logger v0.0.2
 	github.com/gofiber/recover v0.0.2

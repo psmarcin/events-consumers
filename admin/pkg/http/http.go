@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gofiber/basicauth"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/helmet"
 	"github.com/gofiber/logger"
@@ -17,10 +18,15 @@ func Start(dependencies Dependencies) {
 	cfg := recover.Config{
 		Handler: ErrorHandler,
 	}
+	basicAuthCfg := basicauth.Config{
+		Users: map[string]string{
+			config.C.BasicAuthUser:  config.C.BasicAuthPassword,
+		},
+	}
 
 	app := fiber.New()
 	app.Settings.CaseSensitive = true
-
+	app.Use(basicauth.New(basicAuthCfg))
 	app.Use(helmet.New())
 	app.Use(requestid.New())
 	app.Use(logger.New())
