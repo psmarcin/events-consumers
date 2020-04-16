@@ -1,10 +1,53 @@
 {{ define "jobItem" }}
-<li> {{ .Id }} - {{ .Name }} - <small>{{ .Command }}</small> <a href='/job/{{ .Id }}/edit'>Edit</a> <form method="post" action="/job/{{.Id}}/delete"><button>Delete</button></form></li>
+    <tr>
+      <td>{{ .Id }}</td>
+      <td>{{ .Name }}</td>
+      <td><form method="get" action="/job/{{.Id}}/edit"><button class="btn btn-primary">Edit</button></form></td>
+      <td><form method="post" action="/job/{{.Id}}/delete"><button class="btn btn-error">Delete</button></form></td>
+    </tr>
 {{ end }}
 
-<a href="/job/create">Create</a>
-<ul>
+{{ define "header" }}
+<html>
+    <head>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <style>
+       .container {
+        max-width: 1024px;
+       }
+    </style>
+    </head>
+    <body>
+        <div class="container ">
+            <div class="columns">
+                <div class="column col-12">
+{{ end }}
+
+{{ define "footer" }}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}
+
+{{ template "header" . }}
+<h1> Jobs </h1>
+<a class="btn" href="/job/create">Create</a>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Action</th>
+      <th>Danger</th>
+    </tr>
+  </thead>
+  <tbody>
     {{ range . }}
-        {{ template "jobItem" . }}
+      {{ template "jobItem" . }}
     {{ end }}
-</li>
+  </tbody>
+</table>
+
+{{ template "footer" . }}

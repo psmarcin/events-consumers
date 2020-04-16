@@ -1,7 +1,63 @@
-<form action="/job/{{.Id}}/edit" method="post">
-    <input name="id" value={{.Id}} palceholder="ID"></input>
-    <input name="name" value={{.Name}} palceholder="Name"></input>
-    <input name="command" value={{.Command}} palceholder="Command"></input>
-    <input name="selector" value={{.Selector}} palceholder="Selector"></input>
-    <button>Save</button>
+
+{{ define "header" }}
+<html>
+    <head>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <style>
+       .container {
+        max-width: 1024px;
+       }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="columns">
+                <div class="column col-12">
+{{ end }}
+
+{{ define "footer" }}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}
+{{ template "header" . }}
+<h1> Jobs </h1>
+
+<form action="/job/{{.Id}}/edit" method="post" class="form-horizontal">
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+          <label class="form-label" for="form-id-input">ID</label>
+        </div>
+        <div class="col-9 col-sm-12">
+          <input class="form-input" type="text" name="id" value={{.Id}} id="form-id-input" palceholder="ID">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+          <label class="form-label" for="form-name-input">Name</label>
+        </div>
+        <div class="col-9 col-sm-12">
+          <input class="form-input" type="text" name="name" value={{.Name}} id="form-name-input" palceholder="Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+          <label class="form-label" for="form-command-input">Command</label>
+        </div>
+        <div class="col-9 col-sm-12">
+          <textarea class="form-input" name="command" id="form-command-input" placeholder="Command" rows="3">{{ .Command }}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+          <label class="form-label" for="form-selector-input">Selector</label>
+        </div>
+        <div class="col-9 col-sm-12">
+          <textarea class="form-input" name="selector" id="form-selector-input" placeholder="Selector" rows="3">{{ .Selector }}</textarea>
+        </div>
+    </div>
+    <button class="btn btn-primary">Save</button>
 </form>
+{{ template "footer" . }}
