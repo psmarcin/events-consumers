@@ -29,10 +29,10 @@ func New() (Job, error) {
 }
 
 type JobSerialized struct {
-	Id        string `json:"id"`
-	Command   string `json:"command"`
-	Name      string `json:"name"`
-	Selector  string `json:"selector"`
+	Id        string    `json:"id"`
+	Command   string    `json:"command"`
+	Name      string    `json:"name"`
+	Selector  string    `json:"selector"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
@@ -86,9 +86,9 @@ func (j *Job) Create(command, name, selector string) (JobSerialized, error) {
 
 	ref := j.FirestoreClient.Collection(config.C.FirestoreCollectionId).NewDoc()
 	_, err := ref.Set(ctx, map[string]interface{}{
-		"command":  command,
-		"name":     name,
-		"selector": selector,
+		"command":   command,
+		"name":      name,
+		"selector":  selector,
 		"createdAt": time.Now(),
 		"updatedAt": time.Now(),
 	})
@@ -111,9 +111,9 @@ func (j *Job) Update(id, command, name, selector string) (JobSerialized, error) 
 	var job JobSerialized
 	ctx := context.Background()
 	_, err := j.FirestoreClient.Collection(config.C.FirestoreCollectionId).Doc(id).Set(ctx, map[string]interface{}{
-		"command":  command,
-		"name":     name,
-		"selector": selector,
+		"command":   command,
+		"name":      name,
+		"selector":  selector,
 		"updatedAt": time.Now(),
 	}, firestore.MergeAll)
 	if err != nil {

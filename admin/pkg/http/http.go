@@ -1,6 +1,7 @@
 package http
 
 import (
+	j "events-consumers/admin/pkg/jobs"
 	"log"
 	"net/http"
 
@@ -14,13 +15,17 @@ import (
 	"events-consumers/admin/pkg/config"
 )
 
+type Dependencies struct {
+	Job j.Job
+}
+
 func Start(dependencies Dependencies) {
 	cfg := recover.Config{
 		Handler: ErrorHandler,
 	}
 	basicAuthCfg := basicauth.Config{
 		Users: map[string]string{
-			config.C.BasicAuthUser:  config.C.BasicAuthPassword,
+			config.C.BasicAuthUser: config.C.BasicAuthPassword,
 		},
 	}
 
@@ -56,7 +61,7 @@ func IndexHandler(dependencies Dependencies) func(*fiber.Ctx) {
 			c.Next(err)
 		}
 
-		if err := c.Render(config.C.TemplatePath + "views/index.tmpl", jobs); err != nil {
+		if err := c.Render(config.C.TemplatePath+"views/index.tmpl", jobs); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
@@ -78,7 +83,7 @@ func JobEditFormHandler(dependencies Dependencies) func(*fiber.Ctx) {
 
 		log.Printf("job %+v", job)
 
-		if err := c.Render(config.C.TemplatePath + "views/edit.tmpl", job); err != nil {
+		if err := c.Render(config.C.TemplatePath+"views/edit.tmpl", job); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
@@ -100,7 +105,7 @@ func JobEditHandler(dependencies Dependencies) func(*fiber.Ctx) {
 
 func JobCreateFormHandler() func(*fiber.Ctx) {
 	return func(c *fiber.Ctx) {
-		if err := c.Render(config.C.TemplatePath + "views/create.tmpl", nil); err != nil {
+		if err := c.Render(config.C.TemplatePath+"views/create.tmpl", nil); err != nil {
 			c.Status(500).Send(err.Error())
 		}
 	}
