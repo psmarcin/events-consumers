@@ -1,9 +1,11 @@
 package http
 
 import (
-	j "events-consumers/admin/pkg/jobs"
 	"log"
 	"net/http"
+
+	"events-consumers/admin/pkg/config"
+	j "events-consumers/admin/pkg/jobs"
 
 	"github.com/gofiber/basicauth"
 	"github.com/gofiber/fiber"
@@ -11,8 +13,6 @@ import (
 	"github.com/gofiber/logger"
 	"github.com/gofiber/recover"
 	"github.com/gofiber/requestid"
-
-	"events-consumers/admin/pkg/config"
 )
 
 type Dependencies struct {
