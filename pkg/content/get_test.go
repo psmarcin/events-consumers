@@ -8,7 +8,6 @@ import (
 	"golang.org/x/net/html"
 )
 
-
 func TestGetValue(t *testing.T) {
 	bodyStr := "<div><p>1</p><p class=aaa>2</p></div>"
 	selector := "div .aaa"
@@ -29,7 +28,7 @@ func TestGetValue(t *testing.T) {
 
 func TestGetRequestAndValue(t *testing.T) {
 	url := "https://www.onet.pl/"
-	selector := ".serviceName"
+	selector := ".MenuIcon_showLabelText__MurLA"
 	expectValue := "Sympatia"
 	resp, err := runCommand("curl", url)
 	if err != nil {
@@ -53,10 +52,10 @@ func Test_getContent(t *testing.T) {
 	}
 
 	simple, _ := html.Parse(strings.NewReader("<p>1</p>"))
-	simpleClass, _ :=  html.Parse(strings.NewReader("<p class=testClass>2</p>"))
-	nested, _ :=  html.Parse(strings.NewReader("<div><p>3</p></div>"))
-	nestedClass, _ :=  html.Parse(strings.NewReader("<div><p class=testClass>4</p></div>"))
-	doubleNestedClass, _ :=  html.Parse(strings.NewReader("<div id=container><p class=testClass>5</p></div>"))
+	simpleClass, _ := html.Parse(strings.NewReader("<p class=testClass>2</p>"))
+	nested, _ := html.Parse(strings.NewReader("<div><p>3</p></div>"))
+	nestedClass, _ := html.Parse(strings.NewReader("<div><p class=testClass>4</p></div>"))
+	doubleNestedClass, _ := html.Parse(strings.NewReader("<div id=container><p class=testClass>5</p></div>"))
 
 	tests := []struct {
 		name    string
@@ -65,8 +64,8 @@ func Test_getContent(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "should find one element",
-			args:    args{
+			name: "should find one element",
+			args: args{
 				body:     simple,
 				selector: "p",
 			},
@@ -74,8 +73,8 @@ func Test_getContent(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "should find one class element",
-			args:    args{
+			name: "should find one class element",
+			args: args{
 				body:     simpleClass,
 				selector: ".testClass",
 			},
@@ -83,8 +82,8 @@ func Test_getContent(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "should find one nested element",
-			args:    args{
+			name: "should find one nested element",
+			args: args{
 				body:     nested,
 				selector: "div > p",
 			},
@@ -92,8 +91,8 @@ func Test_getContent(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "should find one nested class element",
-			args:    args{
+			name: "should find one nested class element",
+			args: args{
 				body:     nestedClass,
 				selector: "div > .testClass",
 			},
@@ -101,8 +100,8 @@ func Test_getContent(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "should find one double nested class element",
-			args:    args{
+			name: "should find one double nested class element",
+			args: args{
 				body:     doubleNestedClass,
 				selector: "#container > .testClass",
 			},
@@ -136,8 +135,8 @@ func Test_runCommand(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "should return error - command not found",
-			args:    args{
+			name: "should return error - command not found",
+			args: args{
 				command:   "NOT_EXISTING",
 				arguments: "--",
 			},
@@ -145,8 +144,8 @@ func Test_runCommand(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:    "should return no content",
-			args:    args{
+			name: "should return no content",
+			args: args{
 				command:   "echo",
 				arguments: "",
 			},
